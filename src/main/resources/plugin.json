@@ -1,7 +1,7 @@
 {
-  "name": "",
-  "author": "",
-  "main": "",
-  "description": "",
-  "version": ""
+  "name": "LightweightHub",
+  "author": "Mindustry Inside",
+  "main": "inside.LightweightHub",
+  "description": "A lightweight, basic hub plugin for servers",
+  "version": "0.1"
 }
