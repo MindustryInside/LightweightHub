@@ -20,7 +20,6 @@ import static mindustry.Vars.*;
 
 public class LightweightHub extends Plugin{
     public static Config config;
-    public static Mods.ModMeta info;
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
@@ -51,9 +50,8 @@ public class LightweightHub extends Plugin{
 
     @Override
     public void init(){
-        info = mods.list().find(m -> m.main instanceof LightweightHub).meta;
 
-        Fi lobby = customMapDirectory.child("hub-" + info.version + ".msav");
+        Fi lobby = customMapDirectory.child("lobby.msav");
         if(!lobby.exists()){
             try{
                 Streams.copy(Objects.requireNonNull(LightweightHub.class.getClassLoader().getResourceAsStream(lobby.name())), lobby.write(false));
