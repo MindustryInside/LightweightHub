@@ -1,4 +1,4 @@
-# Plugin name
+# LightweightHub
 
 
 ## Building a Jar
