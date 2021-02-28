@@ -33,7 +33,7 @@ public class LightweightHub extends Plugin{
             .disableHtmlEscaping()
             .create();
 
-    public void teleport(final Player player){
+    public void teleport(Player player){
         teleport(player, null);
     }
 

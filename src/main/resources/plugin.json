@@ -2,6 +2,6 @@
   "name": "LightweightHub",
   "author": "Mindustry Inside",
   "main": "inside.LightweightHub",
-  "description": "A lightweight, basic hub plugin for servers",
-  "version": "0.1"
+  "description": "A lightweight, basic hub plugin for servers.",
+  "version": "0.2"
 }
