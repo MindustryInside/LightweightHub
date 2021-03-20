@@ -9,9 +9,9 @@ public class Config{
 
     /**
      * Online count pattern, used in servers status.
-     * @see arc.util.Strings#format(String, Object...)
+     * This is placeholder based patter, see LightweightHub#formatter
      */
-    public String onlinePattern = "\uE837 [accent]Online: %online%\n\uE827 Map: %map%";
+    public String onlinePattern = "\uE837 [accent]Online: %players%\n\uE827 Map: %mapname%";
 
     /** List with {@link HostData}. */
     public List<HostData> servers = Arrays.asList(

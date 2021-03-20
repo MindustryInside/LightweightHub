@@ -12,7 +12,7 @@ import mindustry.mod.*;
 import mindustry.net.*;
 import mindustry.world.Tile;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -23,7 +23,18 @@ public class LightweightHub extends Plugin{
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
-    private final Func<Host, String> formatter = h -> config.onlinePattern.replace("%online%", Integer.toString(h.players)).replace("%map%", h.mapname);
+    private final Func<Host, String> formatter = h -> config.onlinePattern.replace("%name%", h.name)
+            .replace("%address%", h.address)
+            .replace("%mapname%", h.mapname)
+            .replace("%description%", h.description)
+            .replace("%wave%", Integer.toString(h.wave))
+            .replace("%players%", Integer.toString(h.players))
+            .replace("%playerLimit%", Integer.toString(h.playerLimit))
+            .replace("%version%", Integer.toString(h.version))
+            .replace("%versionType%", h.versionType)
+            .replace("%mode%", h.mode.name()) // TODO: modeName support
+            .replace("%ping%", Integer.toString(h.ping))
+            .replace("%port%", Integer.toString(h.port));
 
     private final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
@@ -54,7 +65,9 @@ public class LightweightHub extends Plugin{
         Fi lobby = customMapDirectory.child("lobby.msav");
         if(!lobby.exists()){
             try{
-                Streams.copy(Objects.requireNonNull(LightweightHub.class.getClassLoader().getResourceAsStream(lobby.name())), lobby.write(false));
+                InputStream stream = LightweightHub.class.getClassLoader().getResourceAsStream(lobby.name());
+                Objects.requireNonNull(stream, "stream");
+                Streams.copy(stream, lobby.write(false));
             }catch(IOException e){
                 Log.err("Failed to copy hub map. Skipping.");
                 Log.err(e);
