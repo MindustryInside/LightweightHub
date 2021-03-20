@@ -23,7 +23,7 @@ public class LightweightHub extends Plugin{
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
-    private final Func<Host, String> formatter = h -> config.onlinePattern.replace("%name%", h.name)
+    public final Func<Host, String> formatter = h -> config.onlinePattern.replace("%name%", h.name)
             .replace("%address%", h.address)
             .replace("%mapname%", h.mapname)
             .replace("%description%", h.description)
@@ -36,7 +36,7 @@ public class LightweightHub extends Plugin{
             .replace("%ping%", Integer.toString(h.ping))
             .replace("%port%", Integer.toString(h.port));
 
-    private final Gson gson = new GsonBuilder()
+    public final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
             .setPrettyPrinting()
             .serializeNulls()

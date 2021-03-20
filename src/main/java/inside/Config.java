@@ -9,7 +9,7 @@ public class Config{
 
     /**
      * Online count pattern, used in servers status.
-     * This is placeholder based patter, see LightweightHub#formatter
+     * This is placeholder based patter, {@link LightweightHub#formatter}.
      */
     public String onlinePattern = "\uE837 [accent]Online: %players%\n\uE827 Map: %mapname%";
 
