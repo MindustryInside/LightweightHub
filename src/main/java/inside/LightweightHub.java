@@ -23,7 +23,7 @@ public class LightweightHub extends Plugin{
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
-    private final Func<Host, String> formatter = h -> Strings.format(config.onlinePattern, h.players);
+    private final Func<Host, String> formatter = h -> config.onlinePattern.replace("%online%", Integer.toString(h.players)).replace("%map%", h.mapname);
 
     private final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
