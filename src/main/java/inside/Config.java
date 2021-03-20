@@ -4,7 +4,7 @@ import java.util.*;
 
 public class Config{
 
-    /** Offline pattern, used when servers is offline */
+    /** Offline pattern, used when servers is offline. */
     public String offlinePattern = "\u26A0 [scarlet]Offline";
 
     /**
@@ -12,6 +12,9 @@ public class Config{
      * This is placeholder based patter, see LightweightHub#formatter
      */
     public String onlinePattern = "\uE837 [accent]Online: %players%\n\uE827 Map: %mapname%";
+
+    /** If {@code true}, player connection logging will be enabled. */
+    public boolean logConnects = false;
 
     /** List with {@link HostData}. */
     public List<HostData> servers = Arrays.asList(

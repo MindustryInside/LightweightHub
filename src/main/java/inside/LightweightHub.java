@@ -51,8 +51,9 @@ public class LightweightHub extends Plugin{
         for(HostData h : config.servers){
             if(h.inDiapason(tile != null ? tile.x : player.tileX(), tile != null ? tile.y : player.tileY())){
                 net.pingHost(h.ip, h.port, host -> {
-                    // I'm not sure I need it yet
-                    Log.debug("[@] @ --> @", player.uuid(), player.name, h.ip + ":" + h.port);
+                    if(config.logConnects){
+                        Log.info("[@] @ --> @:@", player.uuid(), player.name, h.ip, h.port);
+                    }
                     Call.connect(player.con, h.ip, h.port);
                 }, e -> {});
             }
@@ -122,6 +123,7 @@ public class LightweightHub extends Plugin{
     public void registerServerCommands(CommandHandler handler){
 
         handler.register("reload-cfg", "Reload config.", args -> {
+            // May be worth copying to prevent error information
             config = gson.fromJson(dataDirectory.child("config-hub.json").readString(), Config.class);
             Log.info("Reloaded");
         });
