@@ -1,5 +1,7 @@
 package inside;
 
+import mindustry.net.Host;
+
 import java.util.*;
 
 public class Config{
@@ -10,6 +12,9 @@ public class Config{
     /**
      * Online count pattern, used in servers status.
      * This is placeholder based patter, {@link LightweightHub#formatter}.
+     * <p>
+     * Syntax: <b>%fieldName%</b> - where fieldName is one of
+     * a fields is {@link Host} class
      */
     public String onlinePattern = "\uE837 [accent]Online: %players%\n\uE827 Map: %mapname%";
 

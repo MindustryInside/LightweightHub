@@ -80,6 +80,7 @@ public class LightweightHub extends Plugin{
             cfg.writeString(gson.toJson(config = new Config()));
             Log.info("Config created...");
         }else{
+            // may be thrown exception if json has invalid format
             config = gson.fromJson(cfg.reader(), Config.class);
         }
 
@@ -123,9 +124,13 @@ public class LightweightHub extends Plugin{
     public void registerServerCommands(CommandHandler handler){
 
         handler.register("reload-cfg", "Reload config.", args -> {
-            // May be worth copying to prevent error information
-            config = gson.fromJson(dataDirectory.child("config-hub.json").readString(), Config.class);
-            Log.info("Reloaded");
+            try{
+                config = gson.fromJson(dataDirectory.child("config-hub.json").readString(), Config.class);
+                Log.info("Reloaded");
+            }catch(Throwable t){
+                Log.err("Failed to reload config.json.");
+                Log.err(t);
+            }
         });
     }
 }
