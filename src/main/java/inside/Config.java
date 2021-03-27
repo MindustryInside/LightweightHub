@@ -14,7 +14,7 @@ public class Config{
      * This is placeholder based patter, {@link LightweightHub#formatter}.
      * <p>
      * Syntax: <b>%fieldName%</b> - where fieldName is one of
-     * a fields is {@link Host} class
+     * a fields is {@link Host} class.
      */
     public String onlinePattern = "\uE837 [accent]Online: %players%\n\uE827 Map: %mapname%";
 
