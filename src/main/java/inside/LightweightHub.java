@@ -32,7 +32,8 @@ public class LightweightHub extends Plugin{
             .replace("%playerLimit%", Integer.toString(h.playerLimit))
             .replace("%version%", Integer.toString(h.version))
             .replace("%versionType%", h.versionType)
-            .replace("%mode%", h.mode.name()) // TODO: modeName support
+            .replace("%mode%", h.mode.name()) // NOTE: Gamemode#toString use localized string, but the server has no localization.
+            .replace("%modeName%", h.modeName != null ? h.modeName : h.mode.name())
             .replace("%ping%", Integer.toString(h.ping))
             .replace("%port%", Integer.toString(h.port));
 
