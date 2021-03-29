@@ -1,6 +1,6 @@
 # LightweightHub
 Basic hub plugin for Mindustry servers. <br>
-If you have a servers with mods, use [this plugin](https://github.com/MindustryInside/TheInspection)
+If you have a servers with mods, download also [this plugin](https://github.com/MindustryInside/TheInspection)
 
 ## Building a Jar
 

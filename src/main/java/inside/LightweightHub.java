@@ -70,7 +70,7 @@ public class LightweightHub extends Plugin{
                 InputStream stream = LightweightHub.class.getClassLoader().getResourceAsStream(lobby.name());
                 Objects.requireNonNull(stream, "stream");
                 Streams.copy(stream, lobby.write(false));
-            }catch(IOException e){
+            }catch(IOException | NullPointerException e){
                 Log.err("Failed to copy hub map. Skipping.");
                 Log.err(e);
             }
