@@ -14,6 +14,7 @@ import mindustry.world.Tile;
 
 import java.io.*;
 import java.util.Objects;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.*;
@@ -49,13 +50,13 @@ public class LightweightHub extends Plugin{
     }
 
     public void teleport(final Player player, Tile tile){
-        for(HostData h : config.servers){
-            if(h.inDiapason(tile != null ? tile.x : player.tileX(), tile != null ? tile.y : player.tileY())){
-                net.pingHost(h.ip, h.port, host -> {
+        for(HostData data : config.servers){
+            if(data.inDiapason(tile != null ? tile.x : player.tileX(), tile != null ? tile.y : player.tileY())){
+                net.pingHost(data.ip, data.port, host -> {
                     if(config.logConnects){
-                        Log.info("[@] @ --> @:@", player.uuid(), player.name, h.ip, h.port);
+                        Log.info("[@] @ --> @:@", player.uuid(), player.name, data.ip, data.port);
                     }
-                    Call.connect(player.con, h.ip, h.port);
+                    Call.connect(player.con, data.ip, data.port);
                 }, e -> {});
             }
         }
@@ -107,18 +108,20 @@ public class LightweightHub extends Plugin{
         });
 
         Timer.schedule(() -> {
-            for(HostData h : config.servers){
-                net.pingHost(h.ip, h.port, host -> {
-                    counter.addAndGet(host.players);
-                    Call.label(formatter.get(host), 10, h.labelX, h.labelY);
-                }, e -> Call.label(config.offlinePattern, 10, h.labelX, h.labelY));
-            }
+            CompletableFuture<?>[] tasks = config.servers.stream()
+                    .map(data -> CompletableFuture.runAsync(() -> {
+                        net.pingHost(data.ip, data.port, host -> {
+                            counter.addAndGet(host.players);
+                            Call.label(formatter.get(host), 10, data.labelX, data.labelY);
+                        }, e -> Call.label(config.offlinePattern, 10, data.labelX, data.labelY));
+                    }))
+                    .toArray(CompletableFuture<?>[]::new);
 
-            Timer.schedule(() -> {
+            CompletableFuture.allOf(tasks).thenRun(() -> {
                 counter.addAndGet(Groups.player.size());
                 Core.settings.put("totalPlayers", counter.get());
                 counter.set(0);
-            }, 3);
+            }).join();
         }, 3, 10);
     }
 
