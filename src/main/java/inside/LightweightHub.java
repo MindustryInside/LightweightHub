@@ -24,19 +24,19 @@ public class LightweightHub extends Plugin{
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
-    public final Func<Host, String> formatter = h -> config.onlinePattern.replace("%name%", h.name)
-            .replace("%address%", h.address)
-            .replace("%mapname%", h.mapname)
-            .replace("%description%", h.description)
-            .replace("%wave%", Integer.toString(h.wave))
-            .replace("%players%", Integer.toString(h.players))
-            .replace("%playerLimit%", Integer.toString(h.playerLimit))
-            .replace("%version%", Integer.toString(h.version))
-            .replace("%versionType%", h.versionType)
-            .replace("%mode%", h.mode.name()) // NOTE: Gamemode#toString use localized string, but the server has no localization.
-            .replace("%modeName%", h.modeName != null ? h.modeName : h.mode.name())
-            .replace("%ping%", Integer.toString(h.ping))
-            .replace("%port%", Integer.toString(h.port));
+    public final Func<Host, String> formatter = host -> config.onlinePattern.replace("%name%", host.name)
+            .replace("%address%", host.address)
+            .replace("%mapname%", host.mapname)
+            .replace("%description%", host.description)
+            .replace("%wave%", Integer.toString(host.wave))
+            .replace("%players%", Integer.toString(host.players))
+            .replace("%playerLimit%", Integer.toString(host.playerLimit))
+            .replace("%version%", Integer.toString(host.version))
+            .replace("%versionType%", host.versionType)
+            .replace("%mode%", host.mode.name()) // NOTE: Gamemode#toString use localized string, but the server has no localization.
+            .replace("%modeName%", host.modeName != null ? host.modeName : host.mode.name())
+            .replace("%ping%", Integer.toString(host.ping))
+            .replace("%port%", Integer.toString(host.port));
 
     public final Gson gson = new GsonBuilder()
             .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES)
