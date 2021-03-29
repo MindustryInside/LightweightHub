@@ -115,6 +115,7 @@ public class LightweightHub extends Plugin{
             }
 
             Timer.schedule(() -> {
+                counter.addAndGet(Groups.player.size());
                 Core.settings.put("totalPlayers", counter.get());
                 counter.set(0);
             }, 3);
