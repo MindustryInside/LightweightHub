@@ -8,13 +8,13 @@ import arc.util.io.Streams;
 import com.google.gson.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
-import mindustry.mod.*;
+import mindustry.mod.Plugin;
 import mindustry.net.*;
 import mindustry.world.Tile;
 
 import java.io.*;
 import java.util.Objects;
-import java.util.concurrent.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.*;
@@ -80,7 +80,7 @@ public class LightweightHub extends Plugin{
         Fi cfg = dataDirectory.child("config-hub.json");
         if(!cfg.exists()){
             cfg.writeString(gson.toJson(config = new Config()));
-            Log.info("Config created...");
+            Log.info("Config created... (@)", cfg.absolutePath());
         }else{
             // may be thrown exception if json has invalid format
             config = gson.fromJson(cfg.reader(), Config.class);
@@ -91,7 +91,7 @@ public class LightweightHub extends Plugin{
         Events.on(TapEvent.class, event -> teleport(event.player, event.tile));
 
         Events.run(Trigger.update, () -> {
-            if(interval.get(60 * 1.5f)){
+            if(interval.get(60 * 0.5f)){
                 Groups.player.each(this::teleport);
             }
         });
@@ -99,11 +99,12 @@ public class LightweightHub extends Plugin{
         Events.on(PlayerJoin.class, event -> {
             NetConnection con = event.player.con();
 
-            for(HostData h : config.servers){
-                Call.label(con, h.title, 1100f, h.titleX, h.titleY);
-                net.pingHost(h.ip, h.port, host -> {
-                    Call.label(con, formatter.get(host), 10, h.labelX, h.labelY);
-                }, e -> Call.label(con, config.offlinePattern, 10, h.labelX, h.labelY));
+            for(HostData data : config.servers){
+                // NOTE: after sync the server titles are expired
+                Call.label(con, data.title, 1100f, data.titleX, data.titleY);
+                net.pingHost(data.ip, data.port, host -> {
+                    Call.label(con, formatter.get(host), 10, data.labelX, data.labelY);
+                }, e -> Call.label(con, config.offlinePattern, 10, data.labelX, data.labelY));
             }
         });
 
