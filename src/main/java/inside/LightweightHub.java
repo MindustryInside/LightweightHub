@@ -83,7 +83,12 @@ public class LightweightHub extends Plugin{
             Log.info("Config created... (@)", cfg.absolutePath());
         }else{
             // may be thrown exception if json has invalid format
-            config = gson.fromJson(cfg.reader(), Config.class);
+            try{
+                config = gson.fromJson(cfg.reader(), Config.class);
+            }catch(Throwable t){
+                Log.err("Failed to load config file. Check your json format");
+                Log.err(t);
+            }
         }
 
         Events.on(ServerLoadEvent.class, event -> netServer.admins.addActionFilter(playerAction -> false));
@@ -100,21 +105,22 @@ public class LightweightHub extends Plugin{
             NetConnection con = event.player.con();
 
             for(HostData data : config.servers){
-                // NOTE: after sync the server titles are expired
-                Call.label(con, data.title, 1100f, data.titleX, data.titleY);
+                Call.label(con, data.title, 10f, data.titleX, data.titleY);
                 net.pingHost(data.ip, data.port, host -> {
-                    Call.label(con, formatter.get(host), 10, data.labelX, data.labelY);
-                }, e -> Call.label(con, config.offlinePattern, 10, data.labelX, data.labelY));
+                    Call.label(con, formatter.get(host), 10f, data.labelX, data.labelY);
+                }, e -> Call.label(con, config.offlinePattern, 10f, data.labelX, data.labelY));
             }
         });
 
         Timer.schedule(() -> {
             CompletableFuture<?>[] tasks = config.servers.stream()
                     .map(data -> CompletableFuture.runAsync(() -> {
+                        // all tasks executes on ForkJoinPool
+                        Core.app.post(() -> Call.label(data.title, 10f, data.titleX, data.titleY));
                         net.pingHost(data.ip, data.port, host -> {
                             counter.addAndGet(host.players);
-                            Call.label(formatter.get(host), 10, data.labelX, data.labelY);
-                        }, e -> Call.label(config.offlinePattern, 10, data.labelX, data.labelY));
+                            Call.label(formatter.get(host), 10f, data.labelX, data.labelY);
+                        }, e -> Call.label(config.offlinePattern, 10f, data.labelX, data.labelY));
                     }))
                     .toArray(CompletableFuture<?>[]::new);
 
@@ -123,7 +129,7 @@ public class LightweightHub extends Plugin{
                 Core.settings.put("totalPlayers", counter.get());
                 counter.set(0);
             }).join();
-        }, 3, 10);
+        }, 1.5f, 10f);
     }
 
     @Override
