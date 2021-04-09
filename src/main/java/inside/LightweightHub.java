@@ -82,13 +82,16 @@ public class LightweightHub extends Plugin{
             cfg.writeString(gson.toJson(config = new Config()));
             Log.info("Config created... (@)", cfg.absolutePath());
         }else{
-            // may be thrown exception if json has invalid format
             try{
                 config = gson.fromJson(cfg.reader(), Config.class);
             }catch(Throwable t){
                 Log.err("Failed to load config file. Check your json format");
                 Log.err(t);
             }
+        }
+
+        for(EffectData effect : config.effects){
+            Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f);
         }
 
         Events.on(ServerLoadEvent.class, event -> netServer.admins.addActionFilter(playerAction -> false));
@@ -101,14 +104,34 @@ public class LightweightHub extends Plugin{
             }
         });
 
+        Events.run(Trigger.update, () -> {
+            Groups.player.each(p -> p.unit().moving(), p -> {
+                EffectData effect = config.eventEffects.get("move");
+                if(effect != null){
+                    effect.spawn(p.x, p.y);
+                }
+            });
+        });
+
         Events.on(PlayerJoin.class, event -> {
             NetConnection con = event.player.con();
+            EffectData effect = config.eventEffects.get("join");
+            if(effect != null){
+                effect.spawn(event.player.x, event.player.y);
+            }
 
             for(HostData data : config.servers){
                 Call.label(con, data.title, 10f, data.titleX, data.titleY);
                 net.pingHost(data.ip, data.port, host -> {
                     Call.label(con, formatter.get(host), 10f, data.labelX, data.labelY);
                 }, e -> Call.label(con, config.offlinePattern, 10f, data.labelX, data.labelY));
+            }
+        });
+
+        Events.on(PlayerLeave.class, event -> {
+            EffectData effect = config.eventEffects.get("leave");
+            if(effect != null){
+                effect.spawn(event.player.x, event.player.y);
             }
         });
 
