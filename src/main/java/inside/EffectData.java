@@ -7,11 +7,17 @@ import mindustry.entities.Effect;
 import mindustry.gen.Call;
 
 public class EffectData{
+    /** Effect <b>X</b> coordinate. */
     public float x;
+    /** Effect <b>Y</b> coordinate. */
     public float y;
+    /** Effect <b>rotation</b>. */
     public float rotation;
+    /** Respawn period delay. Used with static effects, look {@link Config#effects}. */
     public long periodMillis;
+    /** Effect color. In hex format. */
     private final String color;
+    /** Name of one of {@link Fx} class fields. */
     private final String effect;
 
     public EffectData(float x, float y, float rotation, long periodMillis, String color, String effect){
