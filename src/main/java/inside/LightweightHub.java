@@ -99,7 +99,7 @@ public class LightweightHub extends Plugin{
         Events.on(TapEvent.class, event -> teleport(event.player, event.tile));
 
         Events.run(Trigger.update, () -> {
-            if(interval.get(60 * 0.5f)){
+            if(interval.get(60 * 0.3f)){
                 Groups.player.each(this::teleport);
             }
         });
