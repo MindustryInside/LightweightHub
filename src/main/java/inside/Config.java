@@ -22,16 +22,18 @@ public class Config{
     public boolean logConnects = false;
 
     /** List with {@link EffectData} that are triggered when the event is called. */
-    public Map<String, EffectData> eventEffects = new HashMap<>(){{
-        put("join", new EffectData(200, 248, 30, 0, "#ff0000ff", "explosion"));
-        put("leave", new EffectData(200, 248, 30, 0, "#4169e1ff", "plasticExplosion"));
-        put("move", new EffectData(0, 0, 30, 0, "#4169e1ff", "fire"));
-    }};
+    public Map<String, EffectData> eventEffects = new HashMap<>();
+
+    {
+        eventEffects.put("move", new EffectData(0, 0, 30, 0, "#4169e1ff", "fire"));
+        eventEffects.put("leave", new EffectData(200, 200, 30, 0, "#4169e1ff", "plasticExplosion"));
+        eventEffects.put("join", new EffectData(200, 200, 30, 0, "#ff0000ff", "explosion"));
+    }
 
     /** List with static {@link EffectData}. */
     public List<EffectData> effects = Arrays.asList(
-            new EffectData(230, 248, 30, 3000, "#ff0000ff", "explosion"),
-            new EffectData(230, 208, 30, 3000, "#ff0000ff", "explosion")
+            new EffectData(240, 240, 30, 2000, "#ff0000ff", "explosion"),
+            new EffectData(160, 160, 30, 3000, "#ff0000ff", "explosion")
     );
 
     /** List with {@link HostData}. */
