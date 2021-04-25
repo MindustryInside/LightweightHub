@@ -12,7 +12,7 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | log-connects    | boolean                                   | log player connections to hub's servers in `[player uuid] player name --> server ip:server port` format |
 | servers         | array of [server](#server-object) objects | hub's servers                                                                                           |
 | effects         | array of [effect](#effect-object) objects | static effects that appear with a specified period                                                      |
-| event-effects   | [event effects](#event-effect-object)     | effects called on a specific event ([event effects](#event-effects))                                    |
+| event-effects   | [event effects](#event-effect-object)     | effects called on a specific event                                                                      |
 
 #### Online Pattern Placeholders
 
