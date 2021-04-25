@@ -6,7 +6,7 @@ import java.util.*;
 
 public class Config{
 
-    /** Offline pattern, used when servers is offline. */
+    /** Offline pattern, used when servers are offline. */
     public String offlinePattern = "\u26A0 [scarlet]Offline";
 
     /**
@@ -26,8 +26,8 @@ public class Config{
 
     {
         eventEffects.put("move", new EffectData(0, 0, 30, 0, "#4169e1ff", "fire"));
-        eventEffects.put("leave", new EffectData(200, 200, 30, 0, "#4169e1ff", "plasticExplosion"));
-        eventEffects.put("join", new EffectData(200, 200, 30, 0, "#ff0000ff", "explosion"));
+        eventEffects.put("leave", new EffectData(0, 0, 30, 0, "#4169e1ff", "plasticExplosion"));
+        eventEffects.put("join", new EffectData(0, 0, 30, 0, "#ff0000ff", "explosion"));
     }
 
     /** List with static {@link EffectData}. */
