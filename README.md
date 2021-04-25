@@ -18,4 +18,4 @@ Put jar file to `config/mods` folder.
 
 ## Configuring
 
-Read [CONFIGURING.md](CONFIGURING.md)
+See [CONFIGURING](CONFIGURING.md).

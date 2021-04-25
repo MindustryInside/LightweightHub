@@ -5,14 +5,14 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 
 ### Available Fields
 
-| Field           | Description                                                                                             |
-| --------------- | ------------------------------------------------------------------------------------------------------- |
-| offline-pattern | pattern used when servers are offline                                                                   |
-| online-pattern  | placeholder based ([placeholders](#online-pattern-placeholders)) pattern, used when servers are online  |
-| log-connects    | log player connections to hub's servers in `[player uuid] player name --> server ip:server port` format |
-| servers         | hub's servers. ([servers](#servers))                                                                    |
-| effects         | static effects that appear with a specified period. ([effects](#effects))                               |
-| event-effects   | effects called on a specific event. ([event effects](#event-effects))                                   |
+| Field           | Type                                      | Description                                                                                             |
+| --------------- | ----------------------------------------- | ------------------------------------------------------------------------------------------------------- |
+| offline-pattern | string                                    | pattern used when servers are offline                                                                   |
+| online-pattern  | string                                    | placeholder based ([placeholders](#online-pattern-placeholders)) pattern, used when servers are online  |
+| log-connects    | boolean                                   | log player connections to hub's servers in `[player uuid] player name --> server ip:server port` format |
+| servers         | array of [server](#server-object) objects | hub's servers                                                                                           |
+| effects         | array of [effect](#effect-object) objects | static effects that appear with a specified period                                                      |
+| event-effects   | [event effects](#event-effect-object)     | effects called on a specific event ([event effects](#event-effects))                                    |
 
 #### Online Pattern Placeholders
 
@@ -31,38 +31,42 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | %ping%        | server pint                                             |
 | %port%        | server port                                             |
 
-#### Servers
+### Server Object
 
-| Field      | Description                                                        |
-| ---------- | ------------------------------------------------------------------ |
-| ip         | server ip                                                          |
-| port       | server port                                                        |
-| size       | the teleport block size                                            |
-| teleport-x | latter x coordinate of the teleport border. minimap coordinate     |
-| teleport-y | latter y coordinate of the teleport border. minimap coordinate     |
-| title      | server display name                                                |
-| title-x    | latter x coordinate of the title signboard. minimap coordinate * 8 |
-| title-y    | latter y coordinate of the title signboard. minimap coordinate * 8 |
-| label-x    | latter x coordinate of the status label. minimap coordinate * 8    |
-| label-y    | latter y coordinate of the status label. minimap coordinate * 8    |
+###### Server object structure
 
-#### Effects
+| Field      | Type    | Description                                                        |
+| ---------- | ------- | ------------------------------------------------------------------ |
+| ip         | string  | server ip                                                          |
+| port       | integer | server port                                                        |
+| size       | integer | the teleport block size                                            |
+| teleport-x | integer | latter x coordinate of the teleport border. minimap coordinate     |
+| teleport-y | integer | latter y coordinate of the teleport border. minimap coordinate     |
+| title      | string  | server display name                                                |
+| title-x    | float   | latter x coordinate of the title signboard. minimap coordinate * 8 |
+| title-y    | float   | latter y coordinate of the title signboard. minimap coordinate * 8 |
+| label-x    | float   | latter x coordinate of the status label. minimap coordinate * 8    |
+| label-y    | float   | latter y coordinate of the status label. minimap coordinate * 8    |
 
-| Field         | Description                                                                                                                                      |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
-| x             | effect x coordinate. minimap coordinate * 8                                                                                                      |
-| x             | effect y coordinate. minimap coordinate * 8                                                                                                      |
-| rotation      | effect rotation                                                                                                                                  |
-| period-millis | interval in milliseconds after which the effect will spawn                                                                                       |
-| color         | effect color in hex format                                                                                                                       |
-| effect        | effect name. the name of one of the fields of the [Fx](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/content/Fx.java) class |
+### Effect Object
 
-#### Event Effects
+###### Effect Object structure
+
+| Field         | Type    | Description                                                                                                                                      |
+| ------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
+| x             | float   | effect x coordinate. minimap coordinate * 8                                                                                                      |
+| x             | float   | effect y coordinate. minimap coordinate * 8                                                                                                      |
+| rotation      | float   | effect rotation                                                                                                                                  |
+| period-millis | integer | interval in milliseconds after which the effect will spawn                                                                                       |
+| color         | string  | effect color in hex format                                                                                                                       |
+| effect        | string  | effect name. the name of one of the fields of the [Fx](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/content/Fx.java) class |
+
+### Event Effect Object
+
+###### Event Effect Object structure
 
 > Event effects are such static effects, only without fields: <br>
 > `x`, `y`, `period-millis`
-
-Available names:
 
 | Name  | Description                             |
 | ----- | --------------------------------------- |
