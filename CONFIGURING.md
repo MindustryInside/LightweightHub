@@ -28,7 +28,7 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | %versionType% | server game version type                                |
 | %mode%        | server mode i.e. survival, sandbox, attack, pvp, editor |
 | %modeName%    | server custom mode name, if absent, %mode% is used      |
-| %ping%        | server pint                                             |
+| %ping%        | server ping                                             |
 | %port%        | server port                                             |
 
 ### Server Object
@@ -55,7 +55,7 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | Field         | Type    | Description                                                                                                                                      |
 | ------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
 | x             | float   | effect x coordinate. minimap coordinate * 8                                                                                                      |
-| x             | float   | effect y coordinate. minimap coordinate * 8                                                                                                      |
+| y             | float   | effect y coordinate. minimap coordinate * 8                                                                                                      |
 | rotation      | float   | effect rotation                                                                                                                                  |
 | period-millis | integer | interval in milliseconds after which the effect will spawn                                                                                       |
 | color         | string  | effect color in hex format                                                                                                                       |
