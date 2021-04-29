@@ -28,7 +28,7 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | %versionType% | server game version type                                |
 | %mode%        | server mode i.e. survival, sandbox, attack, pvp, editor |
 | %modeName%    | server custom mode name, if absent, %mode% is used      |
-| %ping%        | server ping                                        |
+| %ping%        | server ping                                             |
 | %port%        | server port                                             |
 
 ### Server Object
