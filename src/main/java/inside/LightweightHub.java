@@ -91,7 +91,6 @@ public class LightweightHub extends Plugin{
                 Log.err(t);
             }
         }
-        Log.info(config.eventEffects);
 
         for(EffectData effect : config.effects){
             tasks.add(Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f));
