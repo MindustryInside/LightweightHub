@@ -102,7 +102,7 @@ public class LightweightHub extends Plugin{
         Events.on(TapEvent.class, event -> teleport(event.player, event.tile));
 
         Events.run(Trigger.update, () -> {
-            if(interval.get(60 * 0.3f)){
+            if(interval.get(60 * 0.15f)){
                 Groups.player.each(this::teleport);
             }
         });
@@ -142,11 +142,11 @@ public class LightweightHub extends Plugin{
             CompletableFuture<?>[] tasks = config.servers.stream()
                     .map(data -> CompletableFuture.runAsync(() -> {
                         // all tasks executes on ForkJoinPool
-                        Core.app.post(() -> Call.label(data.title, 10f, data.titleX, data.titleY));
+                        Core.app.post(() -> Call.label(data.title, 5f, data.titleX, data.titleY));
                         net.pingHost(data.ip, data.port, host -> {
                             counter.addAndGet(host.players);
-                            Call.label(formatter.get(host), 10f, data.labelX, data.labelY);
-                        }, e -> Call.label(config.offlinePattern, 10f, data.labelX, data.labelY));
+                            Call.label(formatter.get(host), 5f, data.labelX, data.labelY);
+                        }, e -> Call.label(config.offlinePattern, 5f, data.labelX, data.labelY));
                     }))
                     .toArray(CompletableFuture<?>[]::new);
 
@@ -155,7 +155,7 @@ public class LightweightHub extends Plugin{
                 Core.settings.put("totalPlayers", counter.get());
                 counter.set(0);
             }).join();
-        }, 1.5f, 10f);
+        }, 1.5f, 5f);
     }
 
     @Override
