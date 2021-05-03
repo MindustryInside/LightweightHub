@@ -3,6 +3,7 @@ package inside;
 import arc.*;
 import arc.files.Fi;
 import arc.func.Func;
+import arc.struct.Seq;
 import arc.util.*;
 import arc.util.io.Streams;
 import com.google.gson.*;
@@ -24,6 +25,7 @@ public class LightweightHub extends Plugin{
 
     private final Interval interval = new Interval();
     private final AtomicInteger counter = new AtomicInteger();
+    private final Seq<Timer.Task> tasks = new Seq<>();
     public final Func<Host, String> formatter = host -> config.onlinePattern.replace("%name%", host.name)
             .replace("%address%", host.address)
             .replace("%mapname%", host.mapname)
@@ -89,9 +91,10 @@ public class LightweightHub extends Plugin{
                 Log.err(t);
             }
         }
+        Log.info(config.eventEffects);
 
         for(EffectData effect : config.effects){
-            Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f);
+            tasks.add(Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f));
         }
 
         Events.on(ServerLoadEvent.class, event -> netServer.admins.addActionFilter(playerAction -> false));
@@ -160,7 +163,11 @@ public class LightweightHub extends Plugin{
 
         handler.register("reload-cfg", "Reload config.", args -> {
             try{
+                tasks.each(Timer.Task::cancel);
                 config = gson.fromJson(dataDirectory.child("config-hub.json").readString(), Config.class);
+                for(EffectData effect : config.effects){
+                    tasks.add(Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f));
+                }
                 Log.info("Reloaded");
             }catch(Throwable t){
                 Log.err("Failed to reload config.json.");
