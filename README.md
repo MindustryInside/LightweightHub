@@ -1,4 +1,5 @@
 # Lightweight Hub
+
 Flexible, powerful hub plugin for Mindustry servers. <br>
 If you have a servers with mods, download also [this plugin](https://github.com/MindustryInside/TheInspection)
 

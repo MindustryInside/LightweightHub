@@ -124,9 +124,8 @@ public class LightweightHub extends Plugin{
 
             for(HostData data : config.servers){
                 Call.label(con, data.title, 10f, data.titleX, data.titleY);
-                net.pingHost(data.ip, data.port, host -> {
-                    Call.label(con, formatter.get(host), 10f, data.labelX, data.labelY);
-                }, e -> Call.label(con, config.offlinePattern, 10f, data.labelX, data.labelY));
+                net.pingHost(data.ip, data.port, host -> Call.label(con, formatter.get(host), 10f, data.labelX, data.labelY),
+                        e -> Call.label(con, config.offlinePattern, 10f, data.labelX, data.labelY));
             }
         });
 

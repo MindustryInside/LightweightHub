@@ -33,7 +33,7 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 
 ### Server Object
 
-###### Server object structure
+###### Server Object structure
 
 | Field      | Type    | Description                                                        |
 | ---------- | ------- | ------------------------------------------------------------------ |
@@ -48,6 +48,33 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | label-x    | float   | latter x coordinate of the status label. minimap coordinate * 8    |
 | label-y    | float   | latter y coordinate of the status label. minimap coordinate * 8    |
 
+###### Optimal Setup Formula
+
+```
+title-x = (teleport-x * 8) + 12
+title-y = (teleport-y * 8) + 36
+
+label-x = (teleport-x * 8) + 12
+label-y = (teleport-y * 8) - 16
+```
+
+###### Example Server Object
+
+```json
+{
+  "ip": "localhost",
+  "port": 6567,
+  "size": 7,
+  "teleport-x": 22,
+  "teleport-y": 37,
+  "title": "title",
+  "title-x": 200,
+  "title-y": 320,
+  "label-x": 200,
+  "label-y": 288
+}
+```
+
 ### Effect Object
 
 ###### Effect Object structure
@@ -61,6 +88,19 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | color         | string  | effect color in hex format                                                                                                                       |
 | effect        | string  | effect name. the name of one of the fields of the [Fx](https://github.com/Anuken/Mindustry/blob/master/core/src/mindustry/content/Fx.java) class |
 
+###### Example Effect Object
+
+```json
+{
+  "x": 240.0,
+  "y": 240.0,
+  "rotation": 30.0,
+  "period-millis": 2000,
+  "color": "#ff0000ff",
+  "effect": "explosion"
+}
+```
+
 ### Event Effect Object
 
 ###### Event Effect Object structure
@@ -73,3 +113,13 @@ The plugin configuration file uses the JSON format, see [json.org](https://www.j
 | move  | effect appearing when the player moves  |
 | join  | effect appearing when the player joins  |
 | leave | effect appearing when the player leaves |
+
+###### Example Event Effect Object
+
+```json
+{
+  "rotation": 30.0,
+  "color": "#4169e1ff",
+  "effect": "fire"
+}
+```
