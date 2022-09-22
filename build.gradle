@@ -1,32 +1,32 @@
 apply plugin: 'java'
 
-repositories{
+repositories {
     mavenCentral()
-    maven{url 'https://www.jitpack.io'}
+    maven { url 'https://www.jitpack.io' }
 }
 
-ext{
+ext {
     versions = [:]
-    versions.mindustry = 'v126.2'
-    versions.gson = '2.8.6'
+    versions.mindustry = 'v138'
+    versions.gson = '2.9.0'
 }
 
-dependencies{
+dependencies {
     compileOnly "com.github.Anuken.Arc:arc-core:$versions.mindustry"
     compileOnly "com.github.Anuken.Mindustry:core:$versions.mindustry"
 
     implementation "com.google.code.gson:gson:$versions.gson"
 }
 
-tasks.withType(JavaCompile){
-    if(JavaVersion.current() != JavaVersion.VERSION_1_8){
+tasks.withType(JavaCompile) {
+    if (JavaVersion.current() != JavaVersion.VERSION_1_8) {
         options.compilerArgs += ['--release', '8']
     }
 }
 
-jar{
+jar {
     archiveFileName.set "${project.archivesBaseName}.jar"
-    from{
-        configurations.runtimeClasspath.collect{it.isDirectory() ? it : zipTree(it)}
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
 }

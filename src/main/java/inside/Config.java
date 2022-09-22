@@ -4,7 +4,7 @@ import mindustry.net.Host;
 
 import java.util.*;
 
-public class Config{
+public class Config {
 
     /** Offline pattern, used when servers are offline. */
     public String offlinePattern = "\u26A0 [scarlet]Offline";

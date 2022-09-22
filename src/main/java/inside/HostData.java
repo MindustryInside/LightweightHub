@@ -1,6 +1,6 @@
 package inside;
 
-public class HostData{
+public class HostData {
     /** Server IP address. */
     public String ip = "localhost";
     /** Server port. */
@@ -25,7 +25,7 @@ public class HostData{
     /** The latter <b>Y</b> coordinate of the status label. */
     public int labelY;
 
-    public HostData(int port, int size, int teleportX, int teleportY, int titleX, int titleY, int labelX, int labelY){
+    public HostData(int port, int size, int teleportX, int teleportY, int titleX, int titleY, int labelX, int labelY) {
         this.port = port;
         this.size = size;
         this.teleportX = teleportX;
@@ -36,8 +36,8 @@ public class HostData{
         this.labelY = labelY;
     }
 
-    public boolean inDiapason(int x, int y){
+    public boolean inDiapason(int x, int y) {
         return x <= teleportX + size && x >= teleportX &&
-               y >= teleportY && y <= teleportY + size;
+                y >= teleportY && y <= teleportY + size;
     }
 }
