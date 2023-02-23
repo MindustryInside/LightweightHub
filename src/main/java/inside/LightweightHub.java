@@ -20,7 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static mindustry.Vars.*;
 
-public class LightweightHub extends Plugin{
+public class LightweightHub extends Plugin {
     public static Config config;
 
     private final Interval interval = new Interval();
@@ -47,52 +47,53 @@ public class LightweightHub extends Plugin{
             .disableHtmlEscaping()
             .create();
 
-    public void teleport(Player player){
+    public void teleport(Player player) {
         teleport(player, null);
     }
 
-    public void teleport(final Player player, Tile tile){
-        for(HostData data : config.servers){
-            if(data.inDiapason(tile != null ? tile.x : player.tileX(), tile != null ? tile.y : player.tileY())){
+    public void teleport(Player player, Tile tile) {
+        for (HostData data : config.servers) {
+            if (data.inDiapason(tile != null ? tile.x : player.tileX(), tile != null ? tile.y : player.tileY())) {
                 net.pingHost(data.ip, data.port, host -> {
-                    if(config.logConnects){
+                    if (config.logConnects) {
                         Log.info("[@] @ --> @:@", player.uuid(), player.name, data.ip, data.port);
                     }
                     Call.connect(player.con, data.ip, data.port);
-                }, e -> {});
+                }, e -> {
+                });
             }
         }
     }
 
     @Override
-    public void init(){
+    public void init() {
 
         Fi lobby = customMapDirectory.child("lobby.msav");
-        if(!lobby.exists()){
-            try{
+        if (!lobby.exists()) {
+            try {
                 InputStream stream = LightweightHub.class.getClassLoader().getResourceAsStream(lobby.name());
                 Objects.requireNonNull(stream, "stream");
                 Streams.copy(stream, lobby.write(false));
-            }catch(IOException | NullPointerException e){
+            } catch (IOException | NullPointerException e) {
                 Log.err("Failed to copy hub map. Skipping.");
                 Log.err(e);
             }
         }
 
         Fi cfg = dataDirectory.child("config-hub.json");
-        if(!cfg.exists()){
+        if (!cfg.exists()) {
             cfg.writeString(gson.toJson(config = new Config()));
             Log.info("Config created... (@)", cfg.absolutePath());
-        }else{
-            try{
+        } else {
+            try {
                 config = gson.fromJson(cfg.reader(), Config.class);
-            }catch(Throwable t){
+            } catch (Throwable t) {
                 Log.err("Failed to load config file. Check your json format");
                 Log.err(t);
             }
         }
 
-        for(EffectData effect : config.effects){
+        for (EffectData effect : config.effects) {
             tasks.add(Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f));
         }
 
@@ -101,7 +102,7 @@ public class LightweightHub extends Plugin{
         Events.on(TapEvent.class, event -> teleport(event.player, event.tile));
 
         Events.run(Trigger.update, () -> {
-            if(interval.get(60 * 0.15f)){
+            if (interval.get(60 * 0.15f)) {
                 Groups.player.each(this::teleport);
             }
         });
@@ -109,7 +110,7 @@ public class LightweightHub extends Plugin{
         Events.run(Trigger.update, () -> {
             Groups.player.each(p -> p.unit().moving(), p -> {
                 EffectData effect = config.eventEffects.get("move");
-                if(effect != null){
+                if (effect != null) {
                     effect.spawn(p.x, p.y);
                 }
             });
@@ -118,11 +119,11 @@ public class LightweightHub extends Plugin{
         Events.on(PlayerJoin.class, event -> {
             NetConnection con = event.player.con();
             EffectData effect = config.eventEffects.get("join");
-            if(effect != null){
+            if (effect != null) {
                 effect.spawn(event.player.x, event.player.y);
             }
 
-            for(HostData data : config.servers){
+            for (HostData data : config.servers) {
                 Call.label(con, data.title, 10f, data.titleX, data.titleY);
                 net.pingHost(data.ip, data.port, host -> Call.label(con, formatter.get(host), 10f, data.labelX, data.labelY),
                         e -> Call.label(con, config.offlinePattern, 10f, data.labelX, data.labelY));
@@ -131,7 +132,7 @@ public class LightweightHub extends Plugin{
 
         Events.on(PlayerLeave.class, event -> {
             EffectData effect = config.eventEffects.get("leave");
-            if(effect != null){
+            if (effect != null) {
                 effect.spawn(event.player.x, event.player.y);
             }
         });
@@ -139,7 +140,7 @@ public class LightweightHub extends Plugin{
         Timer.schedule(() -> {
             CompletableFuture<?>[] tasks = config.servers.stream()
                     .map(data -> CompletableFuture.runAsync(() -> {
-                        // all tasks executes on ForkJoinPool
+                        // all tasks execute on ForkJoinPool
                         Core.app.post(() -> Call.label(data.title, 5f, data.titleX, data.titleY));
                         net.pingHost(data.ip, data.port, host -> {
                             counter.addAndGet(host.players);
@@ -157,17 +158,17 @@ public class LightweightHub extends Plugin{
     }
 
     @Override
-    public void registerServerCommands(CommandHandler handler){
+    public void registerServerCommands(CommandHandler handler) {
 
         handler.register("reload-cfg", "Reload config.", args -> {
-            try{
+            try {
                 tasks.each(Timer.Task::cancel);
                 config = gson.fromJson(dataDirectory.child("config-hub.json").readString(), Config.class);
-                for(EffectData effect : config.effects){
+                for (EffectData effect : config.effects) {
                     tasks.add(Timer.schedule(effect::spawn, 0f, effect.periodMillis / 1000f));
                 }
                 Log.info("Reloaded");
-            }catch(Throwable t){
+            } catch (Throwable t) {
                 Log.err("Failed to reload config.json.");
                 Log.err(t);
             }
